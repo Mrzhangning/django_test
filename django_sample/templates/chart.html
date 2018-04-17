@@ -1,0 +1,279 @@
+{%  load static %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>图表展示</title>
+    <link rel="stylesheet" href="{%  static 'css/semantic.css' %}">
+    <script src="{%  static 'js/jquery.min.js' %}"></script>
+    <script src="{%  static 'js/semantic.js' %}"></script>
+
+    <script src="{%  static 'js/jquery-1.8.3.min.js' %}"></script>
+    <script src="{% static 'js/highcharts.js' %}"></script>
+    <script src="{%  static 'js/exporting.js' %}"></script>
+    <script src="{%  static 'js/oldie.js' %}"></script>
+    <script src="{%  static 'js/highcharts-zh_CN.js' %}"></script>
+
+
+
+  </head>
+  <body>
+    <div class="ui thin visible left sidebar inverted vertical menu">
+      <div class="header item">
+        <img src="{%  static 'images/daishu.png' %}">
+      </div>
+      <div class="item">
+        任务明细
+        <i class="browser icon"></i>
+      </div>
+      <div class="item">
+        
+        <a href="chart.html" target="_blank">图表展示</a>      <!--点击跳转到index_chart.html-->
+        <i class="bar chart icon"></i>
+
+      </div>
+      <div class="item">
+        <a href="http://waimai.meituan.com/home/wx4gd6wer338" target="_blank"> 其他</a> 
+        <i class="idea icon"></i>
+      </div>
+
+    </div>
+    <div class="pusher">
+    <!-- 主菜单-->
+      <div class="ui menu">
+        <div class="header item" id="menu">
+          <a href="index.html">返回主菜单</a>
+          <i class="content icon"></i>
+        </div>
+        <div class="item" id="data">
+          日工单量
+        </div>
+        <div class="item" id="status">
+          解决/关闭
+        </div>
+        <div class="item" id="style">
+          临时/长期
+        </div>
+        <div class="item" id="type">
+          工单类型
+        </div>
+        <div class="item" id="detail">
+         工单描述词云
+        </div>
+      </div>
+
+     
+      <div class="ui divider"></div>
+      <div class="ui equal width grid" style="margin:5px 0 5px 0;width:70%">
+        <div class="row">
+          <div class="column">
+            <div class="ui container"  id="chart1"></div>
+            <div class="ui container"  id="chart2"></div> 
+            <div class="ui container"  id="chart3"></div> 
+            <div class="ui container"  id="chart4"></div>
+           </div>
+        </div> 
+      </div>
+
+
+       <!--   词云图   medium  large  big huge  -->
+      <div class="ui container" style="padding:5px 0 5px 100px " >
+        <div class="ui medium images"  id = "chart5" style="display:none ">
+          <h1 class="ui header"> 备注说明</h1>
+          <img src="{%  static 'images/desc.png' %}">
+          <h1 class="ui header"> 描述 </h1>
+          <img src="{%  static 'images/detail.png' %}">
+        </div>
+      </div>
+
+
+      <!-- 复制highchart的图标代码粘贴，并赋值status  chart1 data-->
+      <script>
+        $('#data').click(function () {
+          var chart = Highcharts.chart('chart1', {
+            chart: {
+              type: 'column'
+            },
+            title: {
+                text: '日处理工单量'
+            },
+            xAxis: {
+                type: 'category'
+            },
+            yAxis: {
+                title: {
+                    text: '数量'
+                }
+            },
+            legend:{
+                enable:false
+            },
+            series: [{
+                name:'chart1',
+                colorByPoint:true,
+                data: {{ chart1|safe }}
+            }]
+        });
+
+        });
+      </script> 
+
+      <!-- 复制highchart的图标代码粘贴，并赋值status  chart2 status-->
+      <script>
+        $('#status').click(function () {
+          $('#chart2').highcharts({
+            chart: {
+              plotBackgroundColor: null,
+              plotBorderWidth: null,
+              plotShadow: false
+            },
+            title: {
+              text: '解决/关闭工单量'
+            },
+            tooltip: {
+              headerFormat: '{series.name}<br>'
+            },
+            plotOptions: {
+              pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                  enabled: false
+                },
+                showInLegend: true
+              }
+            },
+            series: [{
+              type: 'pie',
+              name: '订单量',
+              data:{{  chart2|safe }}
+            }]
+          });
+        });
+      </script> 
+
+       <!-- 复制highchart的图标代码粘贴，并赋值status  chart3 style-->
+      <script>
+        $('#style').click(function () {
+          $('#chart3').highcharts({
+            chart: {
+              plotBackgroundColor: null,
+              plotBorderWidth: 0,
+              plotShadow: false
+            },
+            title: {
+              text: '临时/长期需求订单量'
+            },
+            tooltip: {
+              headerFormat: '{series.name}<br>'
+            },
+            plotOptions: {
+              pie: {
+                dataLabels: {
+                  enabled: true,
+                  distance: -50,
+                  style: {
+                    fontWeight: 'bold',
+                    color: 'white',
+                    textShadow: '0px 1px 2px black'
+                  }
+                },
+                startAngle: -90,
+                endAngle: 90,
+                center: ['50%', '75%']
+              }
+            },
+            series: [{
+              type: 'pie',
+              name: '临时/长期',
+              innerSize: '50%',
+              data:{{ chart3|safe }}
+                  }]
+                });
+        });
+      </script> 
+      <!-- 复制highchart的图标代码粘贴，并赋值status  chart4 type-->
+      <script>
+        $('#type').click(function () {
+          $('#chart4').highcharts({
+            chart: {
+              plotBackgroundColor: null,
+              plotBorderWidth: null,
+              plotShadow: false
+            },
+            title: {
+              text: '工单类型'
+            },
+            tooltip: {
+              headerFormat: '{series.name}<br>'
+            },
+            plotOptions: {
+              pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                  enabled: false
+                },
+                showInLegend: true
+              }
+            },
+            series: [{
+              type: 'pie',
+              name: '工单类型',
+              data:{{  chart4|safe }}
+            }]
+          });
+        });
+      </script> 
+
+
+   
+    <!-- 返回主菜单-->
+    <script>
+      $('#menu').click(function () {
+        $('.ui.sidebar').sidebar('toggle');
+      });
+    </script>
+
+    <script>
+      $('#data').click(function () {
+        $('#chart1').show();
+        $('#chart2').hide();
+        $('#chart3').hide();
+        $('#chart4').hide();
+        $('#chart5').hide();
+      });
+      $('#status').click(function () {
+        $('#chart2').show();
+        $('#chart1').hide();
+        $('#chart3').hide();
+        $('#chart4').hide();
+        $('#chart5').hide();
+      });
+      $('#style').click(function () {
+        $('#chart3').show();
+        $('#chart1').hide();
+        $('#chart2').hide();
+        $('#chart4').hide();
+        $('#chart5').hide();
+      });
+      $('#type').click(function () {
+        $('#chart4').show();
+        $('#chart1').hide();
+        $('#chart2').hide();
+        $('#chart3').hide();
+        $('#chart5').hide();
+      });
+      $('#detail').click(function () {
+        $('#chart5').show();
+        $('#chart1').hide();
+        $('#chart2').hide();
+        $('#chart3').hide();
+        $('#chart4').hide();
+      });
+
+    </script>
+
+  </body>
+</html>

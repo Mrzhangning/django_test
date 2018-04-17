@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>述职报告</title>
+    <link rel="stylesheet" href="{% static 'css/semantic.css' %}">
+    <script src="{%  static 'js/jquery.min.js' %}"></script>
+    <script src="{%  static 'js/semantic.js' %}"></script>
+  </head>
+  <body>
+    <div class="ui thin visible left sidebar inverted vertical menu">
+      <div class="header item">
+
+        <img src="{%  static 'images/daishu.png' %}">
+      </div>
+      <div class="item">
+        任务明细
+        <i class="browser icon"></i>
+      </div>
+      <div class="item">
+        
+        <a href='chart' target='_blank'>图表展示</a>
+
+
+          <!--点击跳转到index_chart.html-->
+        <i class="bar chart icon"></i>
+
+      </div>
+      <div class="item">
+        <a href="http://waimai.meituan.com/home/wx4gd6wer338" target="_blank"> 其他</a> 
+        <i class="idea icon"></i>
+      </div>
+
+    </div>
+
+
+<div class="pusher">
+      <div class="ui menu">
+        <div class="header item" id="menu">
+           菜单
+          <i class="content icon"></i>
+        </div>
+        <div class="item">
+          关于我们
+          <i class="at icon"></i>
+        </div>
+        <div class="item">
+          其它
+          <i class="idea icon"></i>
+        </div>
+      </div>
+
+      <div class="ui container" >
+
+        {% for item in itemInfo %}
+          <div class="ui styled accordion" style="width:60%;margin:20px 5px 20px 50px;">
+            <div class="active title"> 日期：{{ item.data }} 城市：{{ item.city }} </div>
+            <div class="active content">
+              <p>状态：{{ item.status }}需求模式：{{ item.style }}</p>
+            </div>
+            <div class="title"><i class="dropdown icon"></i>需求说明 </div>
+            <div class="content">
+              <p>{{ item.introduce }}</p>
+            </div>
+            <div class="title"><i class="dropdown icon"></i> 需求描述 </div>
+            <div class="content">
+              <p>{{ item.detail }}</p>
+            </div>
+          </div>
+         {% endfor %}
+         </div>
+        <div class="main-content-pagitor"  style="margin:20px 5px 20px 250px">
+            {% if itemInfo.has_previous %}
+                <a href="?page={{ itemInfo.previous_page_number }}">< 上一页</a>
+            {% endif %}
+                <span> {{ itemInfo.number }} of {{ itemInfo.paginator.num_pages }} </span>
+            {% if itemInfo.has_next %}
+                <a href="?page={{ itemInfo.next_page_number }}">下一页 ></a>
+            {% endif %}
+        </div>
+</div>
+
+
+    <!-- 对 点击menu 显示侧边栏-->
+    <script>
+      $('#menu').click(function () {
+        $('.ui.sidebar').sidebar('toggle');
+      });
+    </script>
+    <!-- 对 accordion初始化，不然动画点下下拉不会显示-->
+    <script>
+      $('.ui.accordion')
+      .accordion()
+      ;
+    </script>
+
+  </body>
+</html>
